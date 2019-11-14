@@ -1026,7 +1026,7 @@ namespace SSoTme.OST.Lib.Extensions
                             String contents = contentsNode.InnerXml;
                             foreach (XmlElement fileName in elem.SelectNodes("RelativePath"))
                             {
-                                ProcessFileSetFile(String.Format("{0}\\test.xml", basePath), overwriteAll, elem, contents, fileName, basePath);
+                                ProcessFileSetFile(String.Format("{0}/test.xml", basePath), overwriteAll, elem, contents, fileName, basePath);
                             }
                         }
                         else if (!ReferenceEquals(binaryContentsNode, null) ||
