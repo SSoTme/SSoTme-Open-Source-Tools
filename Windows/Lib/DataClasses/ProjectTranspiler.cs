@@ -50,7 +50,10 @@ namespace SSoTme.OST.Lib.DataClasses
             this.RelativePath = relativePath.SafeToString().Replace("\\", "/");
             if (Environment.CommandLine.Contains(" "))
             {
-                var cmd1 = Environment.CommandLine.Substring(Environment.CommandLine.ToLower().IndexOf("ssotme.exe")) + " ";
+                var index = Environment.CommandLine.ToLower().IndexOf("ssotme.exe");
+                if (index == -1) index = Environment.CommandLine.ToLower().IndexOf(".dll");
+                if (index == -1) throw new Exception("can't parse command line.");
+                var cmd1 = Environment.CommandLine.Substring(index) + " ";
                 this.CommandLine = cmd1.Substring(cmd1.IndexOf(" "));
                 this.CommandLine = this.CommandLine.Replace("-install", "").Trim();
             }
