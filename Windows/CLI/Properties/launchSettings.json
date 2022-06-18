@@ -2,8 +2,8 @@
   "profiles": {
     "DotNetStandardCLI": {
       "commandName": "Project",
-      "commandLineArgs": "-help",
-      "workingDirectory": "C:\\Users\\auto1\\go\\src\\github.com\\eejai42\\SSoTme-Open-Source-Tools\\docs"
+      "commandLineArgs": "-describe",
+      "workingDirectory": "C:\\Users\\auto1\\go\\src\\github.com\\eejai42\\"
     }
   }
 }

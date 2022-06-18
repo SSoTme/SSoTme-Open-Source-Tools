@@ -132,7 +132,8 @@ namespace SSoTme.OST.Lib.CLIOptions
 
                 if (continueToLoad)
                 {
-                    if (String.IsNullOrEmpty(this.setAccountAPIKey) && !this.help && !this.register && !this.authenticate)
+
+                    if (String.IsNullOrEmpty(this.setAccountAPIKey) && this.install && !this.help && !this.register && !this.authenticate)
                     {
                         this.SSoTmeProject = SSoTmeProject.LoadOrFail(new DirectoryInfo(Environment.CurrentDirectory), false);
 
@@ -143,6 +144,10 @@ namespace SSoTme.OST.Lib.CLIOptions
                                 this.parameters.Add(String.Format("{0}={1}", projectSetting.Name, projectSetting.Value));
                             }
                         }
+                    } else
+                    {
+                        var currentDir = new DirectoryInfo(Environment.CurrentDirectory);
+                        this.SSoTmeProject = SSoTmeProject.TryToLoad(currentDir, currentDir, false);
                     }
 
                     this.LoadInputFiles();
@@ -211,7 +216,8 @@ namespace SSoTme.OST.Lib.CLIOptions
                 }
                 else if (this.describe)
                 {
-                    this.SSoTmeProject.Describe(Environment.CurrentDirectory);
+                    if (this.SSoTmeProject is null) ShowError($"This does not appear to be a SSoT.me Project directory.{Environment.NewLine}Neither a SSoTmeProject.json or SSoTme.json file found in this, or any parent directory.{Environment.NewLine}Run `> ssotme -init` to make this a SSoT.me project folder.");
+                    else this.SSoTmeProject.Describe(Environment.CurrentDirectory);
                 }
                 else if (this.descibeAll)
                 {
@@ -529,11 +535,13 @@ namespace SSoTme.OST.Lib.CLIOptions
 
             }
 
+            var rootPath = this.SSoTmeProject is null ? Environment.CurrentDirectory : this.SSoTmeProject.RootPath;
+
             foreach (var fi in matchingFiles)
             {
                 var fsf = new FileSetFile();
                 fsf.RelativePath = String.IsNullOrEmpty(fileNameReplacement) ? fi.Name : fileNameReplacement;
-                fsf.OriginalRelativePath = fi.FullName.Substring(this.SSoTmeProject.RootPath.Length).Replace("\\", "/");
+                fsf.OriginalRelativePath = fi.FullName.Substring(rootPath.Length).Replace("\\", "/");
                 fs.FileSetFiles.Add(fsf);
 
                 if (fi.Exists)

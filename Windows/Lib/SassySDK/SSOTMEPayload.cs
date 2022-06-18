@@ -111,7 +111,7 @@ namespace SassyMQ.SSOTME.Lib.RMQActors
             else
             {
                 FileInfo zfsFI = GetZFSFI();
-                if (zfsFI.Exists)
+                if (!(zfsFI is null) && zfsFI.Exists)
                 {
                     var previousFileSet = File.ReadAllBytes(zfsFI.FullName);
                     previousFileSet.CleanZippedFileSet();
@@ -150,13 +150,17 @@ namespace SassyMQ.SSOTME.Lib.RMQActors
             else
             {
                 var zfsFI = this.GetZFSFI();
-                if (!zfsFI.Directory.Exists) zfsFI.Directory.Create();
-                File.WriteAllBytes(zfsFI.FullName, fileSetXml.Zip());
+                if (!(zfsFI is null))
+                {
+                    if (!zfsFI.Directory.Exists) zfsFI.Directory.Create();
+                    File.WriteAllBytes(zfsFI.FullName, fileSetXml.Zip());
+                }
             }
         }
 
         private FileInfo GetZFSFI()
         {
+            if (this.SSoTmeProject is null) return null;
             var curDir = Environment.CurrentDirectory;
             var relPath = curDir.Substring(this.SSoTmeProject.RootPath.Length);
 
