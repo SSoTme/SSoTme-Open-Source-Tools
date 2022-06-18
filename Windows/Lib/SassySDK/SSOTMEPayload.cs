@@ -107,11 +107,15 @@ namespace SassyMQ.SSOTME.Lib.RMQActors
 
         public void CleanFileSet()
         {
-            FileInfo zfsFI = GetZFSFI();
-            if (zfsFI.Exists)
+            if (this.Transpiler is null) return;
+            else
             {
-                var previousFileSet = File.ReadAllBytes(zfsFI.FullName);
-                previousFileSet.CleanZippedFileSet();
+                FileInfo zfsFI = GetZFSFI();
+                if (zfsFI.Exists)
+                {
+                    var previousFileSet = File.ReadAllBytes(zfsFI.FullName);
+                    previousFileSet.CleanZippedFileSet();
+                }
             }
         }
 
@@ -142,9 +146,13 @@ namespace SassyMQ.SSOTME.Lib.RMQActors
 
         public void SavePreviousFileSet(string fileSetXml)
         {
-            var zfsFI = this.GetZFSFI();
-            if (!zfsFI.Directory.Exists) zfsFI.Directory.Create();
-            File.WriteAllBytes(zfsFI.FullName, fileSetXml.Zip());
+            if (this.Transpiler is null) return;
+            else
+            {
+                var zfsFI = this.GetZFSFI();
+                if (!zfsFI.Directory.Exists) zfsFI.Directory.Create();
+                File.WriteAllBytes(zfsFI.FullName, fileSetXml.Zip());
+            }
         }
 
         private FileInfo GetZFSFI()
@@ -153,7 +161,8 @@ namespace SassyMQ.SSOTME.Lib.RMQActors
             var relPath = curDir.Substring(this.SSoTmeProject.RootPath.Length);
 
             var ssotmeDI = new DirectoryInfo(String.Format("{0}/.ssotme", this.SSoTmeProject.RootPath));
-            if (!ssotmeDI.Exists) {
+            if (!ssotmeDI.Exists)
+            {
                 ssotmeDI.Create();
                 ssotmeDI.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
             }
