@@ -133,21 +133,21 @@ namespace SSoTme.OST.Lib.CLIOptions
                 if (continueToLoad)
                 {
 
-                    if (String.IsNullOrEmpty(this.setAccountAPIKey) && this.install && !this.help && !this.register && !this.authenticate)
-                    {
-                        this.SSoTmeProject = SSoTmeProject.LoadOrFail(new DirectoryInfo(Environment.CurrentDirectory), false);
+                    var currentDir = new DirectoryInfo(Environment.CurrentDirectory);
+                    this.SSoTmeProject = SSoTmeProject.TryToLoad(currentDir, currentDir, false);
 
-                        foreach (var projectSetting in this.SSoTmeProject.ProjectSettings)
+                    if (String.IsNullOrEmpty(this.setAccountAPIKey) && !this.help && !this.register && !this.authenticate)
+                    {
+                        if (!(this.SSoTmeProject is null))
                         {
-                            if (!this.parameters.Any(anyParam => anyParam.StartsWith(String.Format("{0}=", projectSetting.Name))))
+                            foreach (var projectSetting in this.SSoTmeProject.ProjectSettings)
                             {
-                                this.parameters.Add(String.Format("{0}={1}", projectSetting.Name, projectSetting.Value));
+                                if (!this.parameters.Any(anyParam => anyParam.StartsWith(String.Format("{0}=", projectSetting.Name))))
+                                {
+                                    this.parameters.Add(String.Format("{0}={1}", projectSetting.Name, projectSetting.Value));
+                                }
                             }
                         }
-                    } else
-                    {
-                        var currentDir = new DirectoryInfo(Environment.CurrentDirectory);
-                        this.SSoTmeProject = SSoTmeProject.TryToLoad(currentDir, currentDir, false);
                     }
 
                     this.LoadInputFiles();
