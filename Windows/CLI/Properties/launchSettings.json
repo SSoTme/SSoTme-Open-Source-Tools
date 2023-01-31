@@ -2,8 +2,8 @@
   "profiles": {
     "DotNetStandardCLI": {
       "commandName": "Project",
-      "commandLineArgs": "-describe",
-      "workingDirectory": "C:\\Users\\auto1\\go\\src\\github.com\\eejai42\\"
+      "commandLineArgs": "-build",
+      "workingDirectory": "C:\\Users\\auto1\\go\\src\\github.com\\eejai42\\cancred-effortless-admin"
     }
   }
 }

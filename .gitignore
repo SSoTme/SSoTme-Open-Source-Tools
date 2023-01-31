@@ -5,3 +5,4 @@
 /**/.vs/**
 /.ssotme/**
 /Windows/CLI/SSoTme.OST.CLI.csproj.user
+/package-lock.json

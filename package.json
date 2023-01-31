@@ -1,13 +1,13 @@
 {
-  "name": "ssotme",
-  "version": "2021.01.26",
+  "name": "aicapture",
+  "version": "2023.01.31",
   "description": "",
   "devDependencies": {
   },
   "bin": "cli.js",
   "scripts": {
     "build": "dotnet build SSoTmeDotNetCore.sln",
-    "start": "dotnet Windows/CLI/bin/Debug/netcoreapp2.0/SSoTme.OST.CLI.dll",
+    "start": "dotnet Windows/CLI/bin/Debug/netcoreapp2.0/DllHelper.dll",
     "postinstall": "npm run build"
   },
   "keywords": [],
